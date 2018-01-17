@@ -1,0 +1,67 @@
+dotNet.loadAssembly "system.xml"
+
+xmlDoc=dotNetObject "system.xml.xmlDocument"
+
+--Format properties and methods to the listener.
+clearListener()
+format "Properties\n"
+showProperties xmlDoc
+format "\nMethods\n"
+showMethods xmlDoc
+
+--Create a root element for the xml doc and add it to the xmlDocument.
+root=xmlDoc.createElement "Root"
+xmlDoc.appendChild root
+
+--show the properties for the new element.
+showMethods root
+
+for x in objects do
+(
+	--Create a new element for the object.
+	newElement=xmlDoc.createElement "node"
+	
+	--Set attributes on the new elements for the name of the object and the class of it.
+	newElement.setAttribute "name" x.name
+	newElement.setAttribute "class" (classOf x as string)
+	
+	--Append the new element to the root element. 
+	root.appendChild newElement
+)
+
+--Names for elements can't include anything but alpha characters.
+for x in objects do
+(
+	if x.parent==undefined then
+	(
+		--Create a new element for the object.
+		newElement=xmlDoc.createElement "node"
+		--Set attributes on the new elements for the name of the object and the class of it.
+		newElement.setAttribute "name" x.name
+		newElement.setAttribute "class" (classOf x as string)
+		
+		--Append the new element to the root element. 
+		root.appendChild newElement
+		
+		--Call the recursive function and pass the object and element to it.
+		recurseHierarchy x newElement	 
+	)
+)
+
+--Recurse hierarchy and add xml elements
+fn recurseHierarchy obj ele =
+(
+	for i = 1 to obj.children.count do		--Loop through each of the children
+	(
+		--Create a new element for the object.
+		newElement=xmlDoc.createElement "node"
+		--Set attributes on the new elements for the name of the object and the class of it.
+		newElement.setAttribute "name" obj.children[i].name
+		newElement.setAttribute "class" (classOf obj.children[i] as string)
+		
+		--Append the new element to the root element. 
+		ele.appendChild newElement
+		
+		recurseHierarchy obj.children[i] newElement
+	)
+)
