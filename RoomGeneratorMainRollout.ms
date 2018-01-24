@@ -61,6 +61,8 @@ rollout WallsRollout "Walls"
 		updateWallModuleInfoDisplay()
 
 		previewing_module = wall_modules[selected_wall_module]
+
+		handleModulePreview()
 	)
 
 	on removeModule pressed do (
@@ -74,7 +76,8 @@ rollout WallsRollout "Walls"
 				updateWallModuleInfoDisplay()
 
 				previewing_module = wall_modules[selected_wall_module]
-				
+
+				handleModulePreview()
 			)
 			else (
 				selected_wall_module = -1
@@ -92,7 +95,7 @@ rollout WallsRollout "Walls"
 			updateWallModulesList()
 
 			previewing_module = wall_modules[selected_wall_module]
-			
+			handleModulePreview()
 		)
 	)
 )
@@ -294,18 +297,21 @@ rollout RoomGeneratorMainRollout "Room Generator" width:600 height:800
 	label 'TitleLabel' "Room Generator" pos:[120, 5] width:100 height:15 enabled:true align:#left
 
 	subRollout 'SR' "SubRollout"
-	
+
+	checkbox 'previewCheckBox' 	"Generate Previews" 	pos:[20, RoomGeneratorMainRollout.height - 50] width:120 height:30 align:#left
+	button   'generateButton' 	"Generate Modules"   	pos:[previewCheckBox.pos.x + 120, RoomGeneratorMainRollout.height - 50] width:80 height:30 align:#left
+	button   'closeButton' 		"Close" 				pos:[RoomGeneratorMainRollout.width - 100, RoomGeneratorMainRollout.height - 50] width:80 height:30 align:#left
+
 	on RoomGeneratorMainRollout open do (
 		/*AddSubRollout RoomGeneratorMainRollout.SR PersistanceRollout	*/
 		AddSubRollout RoomGeneratorMainRollout.SR WallsRollout
 		AddSubRollout RoomGeneratorMainRollout.SR WindowsRollout
 		AddSubRollout RoomGeneratorMainRollout.SR DoorsRollout
-		RoomGeneratorMainRollout.SR.height += RoomGeneratorMainRollout.height - 100
-	)
+		RoomGeneratorMainRollout.SR.height += RoomGeneratorMainRollout.height - 100	
 
-	checkbox 'previewCheckBox' 	"Generate Previews" 	pos:[20, RoomGeneratorMainRollout.height - 50] width:120 height:30 align:#left
-	button   'generateButton' 	"Generate Modules"   	pos:[previewCheckBox.pos.x + 120, RoomGeneratorMainRollout.height - 50] width:80 height:30 align:#left
-	button   'closeButton' 		"Close" 				pos:[RoomGeneratorMainRollout.width - 100, RoomGeneratorMainRollout.height - 50] width:80 height:30 align:#left
+		preview_enabled = true
+		previewCheckBox.state = true
+	)
 
 	on previewCheckBox changed state do (
 		if(state) then (
@@ -319,6 +325,10 @@ rollout RoomGeneratorMainRollout "Room Generator" width:600 height:800
 	)
 
 	on generateButton pressed do (
-		handleModulePreview()
+		handleGenerateModules()
+	)
+
+	on closeButton pressed do (
+		try (DestroyDialog RoomGeneratorMainRollout) catch ()
 	)
 )

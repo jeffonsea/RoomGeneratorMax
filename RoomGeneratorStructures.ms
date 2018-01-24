@@ -9,3 +9,10 @@ Struct module (
 	on create do format "in create: %\n" this,
 	on clone do format "in clone: %\n" this
 )
+
+Struct generatedModule (
+	module,
+	object,
+	on create do format "in create: %\n" this,
+	on clone do format "in clone: %\n" this
+)
