@@ -4,6 +4,8 @@ Struct module (
 	height,
 	width,
 	length,
+	height_from_floor,
+	isWindow = false,
 	on create do format "in create: %\n" this,
 	on clone do format "in clone: %\n" this
 )
