@@ -292,6 +292,19 @@ function updatedoorModuleInfoDisplay = (
 	DoorsRollout.lengthSpinner.value = door_modules[selected_door_module].length
 )
 
+rollout RoomsRollout "Rooms"
+(
+	spinner heightSpinner 	"Height" 	range:[0,1000,10] \
+	pos:[10, 10]  width:150 height:40 align:#left
+	spinner widthSpinner 	"Width" 	range:[0,1000,10] \
+	pos:[10, 30]  width:150 height:40 align:#left
+	spinner lengthSpinner 	"Length" 	range:[0,1000,10] \
+	pos:[10, 50]  width:150 height:40 align:#left
+
+	button 'generateRoomButton' 	"Generate Rooms" \
+	pos:[200, 10] width:80  height:30 align:#left
+)
+
 rollout RoomGeneratorMainRollout "Room Generator" width:600 height:800
 (
 	label 'TitleLabel' "Room Generator" pos:[120, 5] width:100 height:15 enabled:true align:#left
@@ -307,6 +320,7 @@ rollout RoomGeneratorMainRollout "Room Generator" width:600 height:800
 		AddSubRollout RoomGeneratorMainRollout.SR WallsRollout
 		AddSubRollout RoomGeneratorMainRollout.SR WindowsRollout
 		AddSubRollout RoomGeneratorMainRollout.SR DoorsRollout
+		AddSubRollout RoomGeneratorMainRollout.SR RoomsRollout
 		RoomGeneratorMainRollout.SR.height += RoomGeneratorMainRollout.height - 100	
 
 		preview_enabled = true
